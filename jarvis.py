@@ -19,15 +19,15 @@ translator = Translator(service_urls=[
       'translate.google.co.kr',
     ])
 
-engine = pyttsx3.init('sapi5')
-voices = engine.getProperty('voices')
-# print(voices[0].id)
-engine.setProperty('voices', voices[1].id)
+Assistant = pyttsx3.init('sapi5')
+voices = Assistant.getProperty('voices')
+print(voices[2].id)
+Assistant.setProperty('voices', voices[2].id)
 
 
 def speak(audio):
-    engine.say(audio)
-    engine.runAndWait()
+    Assistant.say(audio)
+    Assistant.runAndWait()
 
 
 def wishMe():
@@ -91,7 +91,7 @@ if __name__ == '__main__':
             print(results)
             speak(results)
 
-        elif 'Open Youtube' in query:
+        elif 'open Youtube' in query:
             webbrowser.open("youtube.com")
         elif 'open google' in query:
             webbrowser.open("google.com")
