@@ -12,6 +12,9 @@ from googletrans import Translator
 import smtplib
 import psutil    
 from os import system
+import pywhatkit
+import pyautogui , pyscreeze
+import keyboard
 
 translator = Translator()
 translator = Translator(service_urls=[
@@ -22,7 +25,8 @@ translator = Translator(service_urls=[
 Assistant = pyttsx3.init('sapi5')
 voices = Assistant.getProperty('voices')
 print(voices[2].id)
-Assistant.setProperty('voices', voices[2].id)
+Assistant.setProperty('voices', voices[0].id)
+Assistant.setProperty('rate',190)
 
 
 def speak(audio):
@@ -51,7 +55,7 @@ def takeCommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
-        r.pause_threshold = 1
+        r.pause_threshold = 0.9
         audio = r.listen(source)
 
     try:
@@ -75,6 +79,11 @@ def sendEmail(to, content):
         server.sendmail('vantechshu6205@gmail.com',to,content)
         server.close()
 
+    
+    
+    
+    
+    
 
 if __name__ == '__main__':
     # speak("Shubham is a good boy.")
@@ -91,14 +100,18 @@ if __name__ == '__main__':
             print(results)
             speak(results)
 
-        elif 'open Youtube' in query:
-            webbrowser.open("youtube.com")
+        elif 'open youtube' in query:
+            speak("Hello, sir What thing do you search on youtube")
+            query= takeCommand().lower()
+            print(query)
+            webbrowser.open(f"https://www.youtube.com/results?search_query={query}")
+
         elif 'open google' in query:
             webbrowser.open("google.com")
         elif 'stop' in query:
-            webbrowser.open(exit())
+            webbrowser.close()
             
-        elif 'open stackoverflow' in query:
+        elif 'open stack overflow' in query:
             webbrowser.open("stackoverflow.com")
         elif 'play music' in query:
             music_dir = 'D:\\New Songs'
@@ -109,7 +122,7 @@ if __name__ == '__main__':
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
             speak(f"Sir, the Time is {strTime}")
         elif 'go offline' in query:
-            sys.exit()
+            break
         elif 'start' in query:
             subprocess.run('start /wait python friday.py', shell=True)
 
@@ -251,6 +264,54 @@ if __name__ == '__main__':
                         break
                 except Exception as e:
                     print(f'this is your {e} error occurs.')
+
+        elif 'open website' in query:
+            speak("Which website do you like to open!")       
+            query = takeCommand().lower()
+            query = query.replace(" ","")
+            webbrowser.open("https://www."+query+".com")
+            
+        elif 'play youtube' in query:
+            speak("what would you like me to play on youtube")
+            query= takeCommand().lower()
+            pywhatkit.playonyt(query)
+            print("done")
+        
+        elif 'send whatsapp message' in query:
+            speak("What message do you send ")
+            print("What message do you send ")
+            msg =takeCommand().lower()
+            speak("Tell me hour")
+            print("Tell me hour")
+            hour = int(takeCommand())
+            speak("Tell me minute")
+            print("Tell me minute")
+            min = int(takeCommand())
+            pywhatkit.sendwhatmsg("+919372888141",msg,hour,min,10)
+            print("done")
+            break
+        elif 'screenshot' in query:
+            speak("Ok sir, what should I name that file") 
+            path = takeCommand()
+            scName = path + ".png"
+            path = "C:\\Users\\Lenovo\\Pictures\\Screenshots\\" + scName
+            pyscreeze.screenshot(path, region=(0,0,1920,1080))
+            os.startfile(f"C:\\Users\\Lenovo\\Pictures\\Screenshots\\{scName}")
+            speak("Here is your screenshot")
+            speak("Thanku sir")
+        elif 'open maps' in query:
+            speak("Which is your location")
+            area = takeCommand().lower()
+            webbrowser.open('https://www.google.com/maps/@22.2851185,73.3637337,1647m/data=!3m1!1e3')
+            speak("This is your current location")
+        
+        elif 'automakt' in query:
+            speak('Whats your command?')
+            command = takeCommand().lower()
+            # if 'rok do' in command:
+            keyboard.press('k')
+        
+
 
             
                
